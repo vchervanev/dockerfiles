@@ -25,6 +25,8 @@ RUN apt-get update -qq && apt-get install -y --no-install-recommends \
     shared-mime-info \
     tzdata \
     zsh \
+    fzf \
+    ripgrep \
     vim && \
     sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
@@ -38,6 +40,12 @@ RUN (echo "deb http://apt.postgresql.org/pub/repos/apt/ bullseye-pgdg main" > /e
 
 RUN npm install --global yarn@1.22.17 && \
     gem update --system 3.4.22 && gem install bundler
+
+RUN git clone https://github.com/vchervanev/dotfiles.git /root/dotfiles && \
+  cp -r /root/dotfiles/.  /root/ && \
+  curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+
 
 ENV MALLOC_CONF="dirty_decay_ms:0,muzzy_decay_ms:0,narenas:2,background_thread:true,thp:never"
 ENV NODE_OPTIONS="--max-old-space-size=8192 --huge-max-old-generation-size"
